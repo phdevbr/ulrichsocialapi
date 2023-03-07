@@ -10,9 +10,25 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { User as UserModel } from '@prisma/client';
+import { create } from 'domain';
+import { json } from 'express';
+import { stringify } from 'querystring';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateUserDTO } from './createUser.dto';
 import { UserService } from './user.service';
+
+type follow = [{ username: string }];
+
+type FollowersAndFollowing = {
+    followers: follow;
+    following: follow;
+};
+
+type Id = {
+    userId: string;
+};
+
+type CompleteUser = UserModel & FollowersAndFollowing;
 
 @Controller('users')
 export class UserController {
@@ -45,5 +61,26 @@ export class UserController {
     @HttpCode(200)
     async createUser(@Body() user: CreateUserDTO) {
         return await this.userService.createUser(user);
+    }
+    @Post(':username/newfollower')
+    async addFollower(@Param('username') username: string, @Body() userId: Id) {
+        let user = (await this.userService.findByUsername({
+            username,
+        })) as CompleteUser;
+        if (user) {
+            let toFollow = await this.userService.findByUsername({
+                id: userId.userId,
+            });
+            if (toFollow) {
+                delete toFollow['following'];
+                delete toFollow['followers'];
+                await this.userService.updateUser(username, {
+                    followers: { connect: { id: toFollow.id } },
+                });
+                return await this.userService.findByUsername({
+                    username,
+                });
+            }
+        }
     }
 }

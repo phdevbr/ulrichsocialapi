@@ -44,6 +44,19 @@ export class UserService {
             select: { thoughts: true },
         });
     }
+
+    async updateUser(username: string, data: any) {
+        return this.prisma.user.update({
+            where: {
+                username,
+            },
+            include: {
+                followers: true,
+            },
+            data,
+        });
+    }
+
     async users() {
         return this.prisma.user.findMany({
             include: {
