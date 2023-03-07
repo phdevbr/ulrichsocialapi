@@ -4,6 +4,12 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDTO } from './createUser.dto';
 import { hash } from 'bcrypt';
 
+export type authUser = {
+    id: string;
+    username: string;
+    password: string;
+};
+
 @Injectable()
 export class UserService {
     constructor(private prisma: PrismaService) {}
@@ -16,6 +22,19 @@ export class UserService {
             include: {
                 followers: { select: { username: true } },
                 following: { select: { username: true } },
+            },
+        });
+    }
+
+    async findByUsernameToAuth(
+        userWhereUnique: Prisma.UserWhereUniqueInput,
+    ): Promise<authUser | null> {
+        return this.prisma.user.findUnique({
+            where: userWhereUnique,
+            select: {
+                id: true,
+                username: true,
+                password: true,
             },
         });
     }
