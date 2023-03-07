@@ -7,8 +7,10 @@ import {
     HttpStatus,
     Param,
     Post,
+    UseGuards,
 } from '@nestjs/common';
 import { User as UserModel } from '@prisma/client';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateUserDTO } from './createUser.dto';
 import { UserService } from './user.service';
 
@@ -16,6 +18,7 @@ import { UserService } from './user.service';
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
+    @UseGuards(JwtAuthGuard)
     @Get(':username')
     @HttpCode(200)
     async getUserByUsername(
@@ -25,16 +28,19 @@ export class UserController {
             return await this.userService.findByUsername({ username });
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
+    @UseGuards(JwtAuthGuard)
     @Get(':username/thoughts')
     @HttpCode(200)
     async getUserThoughts(@Param('username') username: string) {
         return await this.userService.getUserThoughts({ username });
     }
+    @UseGuards(JwtAuthGuard)
     @Get()
     @HttpCode(200)
     async getAllUsers() {
         return await this.userService.users();
     }
+    @UseGuards(JwtAuthGuard)
     @Post()
     @HttpCode(200)
     async createUser(@Body() user: CreateUserDTO) {
