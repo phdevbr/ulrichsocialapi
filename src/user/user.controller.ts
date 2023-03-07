@@ -62,6 +62,8 @@ export class UserController {
     async createUser(@Body() user: CreateUserDTO) {
         return await this.userService.createUser(user);
     }
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(201)
     @Post(':username/newfollower')
     async addFollower(@Param('username') username: string, @Body() userId: Id) {
         let user = (await this.userService.findByUsername({
