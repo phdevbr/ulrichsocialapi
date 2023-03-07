@@ -18,7 +18,7 @@ export class AppController {
     home() {
         return {
             message:
-                'This is the home of the api, please go to /users or /thoughts',
+                'This is the home of the api, please go to /users or /thoughts. Obs: You may have been redirected from a 404 route',
         };
     }
 
@@ -27,11 +27,5 @@ export class AppController {
     @Post('auth/login')
     async login(@Request() req) {
         return this.authService.login(req.user);
-    }
-
-    @UseGuards(JwtAuthGuard)
-    @Get('/profile')
-    getProfile(@Request() req) {
-        return req.user;
     }
 }
