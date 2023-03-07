@@ -33,7 +33,6 @@ export class UserController {
     @Get()
     @HttpCode(200)
     async getAllUsers() {
-        console.log(process.env.JWT_SECRET_KEY);
         return await this.userService.users();
     }
     @Post()
