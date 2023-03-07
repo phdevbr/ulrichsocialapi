@@ -13,6 +13,15 @@ import { LocalAuthGuard } from './auth/local-auth.guard';
 @Controller()
 export class AppController {
     constructor(private authService: AuthService) {}
+
+    @Get()
+    home() {
+        return {
+            message:
+                'This is the home of the api, please go to /users or /thoughts',
+        };
+    }
+
     @HttpCode(200)
     @UseGuards(LocalAuthGuard)
     @Post('auth/login')
