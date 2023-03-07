@@ -5,8 +5,11 @@
     "author": "",
     "private": true,
     "license": "UNLICENSED",
+    "engines": {
+        "node": ">=14.20.0"
+    },
     "scripts": {
-        "build": "nest build",
+        "build": "npx nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
         "start": "nest start",
         "start:dev": "nest start --watch",
