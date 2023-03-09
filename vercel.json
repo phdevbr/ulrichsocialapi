@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "buildCommand": "next build",
+    "buildCommand": "pnpm build",
     "outputDirectory": "dist",
     "installCommand": "pnpm install",
     "routes": [
