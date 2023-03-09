@@ -53,7 +53,7 @@ export class UserController {
     async getAllUsers() {
         return await this.userService.users();
     }
-    @UseGuards(JwtAuthGuard)
+    //@UseGuards(JwtAuthGuard)
     @Post()
     @HttpCode(200)
     async createUser(@Body() user: CreateUserDTO) {
