@@ -10,9 +10,6 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { User as UserModel } from '@prisma/client';
-import { create } from 'domain';
-import { json } from 'express';
-import { stringify } from 'querystring';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateUserDTO } from './createUser.dto';
 import { UserService } from './user.service';
